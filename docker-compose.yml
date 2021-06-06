@@ -1,0 +1,21 @@
+version: '3.8'
+#Services
+services:
+  # nginx service
+  nginx:
+    image: nginx:1.19
+    ports:
+      - 80:80
+    volumes:
+      - ./.docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./public:/var/www/php
+    depends_on:
+      - php
+
+  # PHP service
+  php:
+    build:
+      context: .docker/php
+      dockerfile: PHP.Dockerfile
+    volumes:
+      - ./public:/var/www/php
