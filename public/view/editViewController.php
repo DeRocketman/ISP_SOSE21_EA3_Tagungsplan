@@ -45,7 +45,7 @@ function buildFormButton()
 }
 
 function buildEditPage(){
-    $conf = loadConference();
+    $conf = buildConference();
     $datesCount = count($conf->getDays());
     $startDate = $conf->getDays()[0];
     $endDate = $conf->getDays()[$datesCount - 1];
@@ -65,5 +65,4 @@ function buildEditPage(){
         }
     }
     buildFormButton();
-    $_SESSION["ConfBuild"]=true;
 }

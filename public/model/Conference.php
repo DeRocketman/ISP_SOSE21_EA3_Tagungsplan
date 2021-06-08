@@ -11,6 +11,7 @@ class Conference
     private $dailyTimeslots;
     private $dailySessionList;
 
+
     /**
      * Conference constructor.
      * @param string $name
@@ -21,7 +22,7 @@ class Conference
      * @param array $dailyTimeslots
      */
     public function __construct(string $name,string $welcomeText,array $days,string $city,
-                                string $location,array $dailyTimeslots)
+                                string $location, array $dailyTimeslots)
     {
         $this->name = $name;
         $this->welcomeText = $welcomeText;
@@ -30,7 +31,6 @@ class Conference
         $this->location = $location;
         $this->dailyTimeslots = $dailyTimeslots;
         $this->dailySessionList = array();
-        $this->createDailySessionList();
     }
 
     public function createDailySessionList()
@@ -88,7 +88,7 @@ class Conference
      */
     public function getDailyTimeslot(): array
     {
-        return $this->dailyTimeslot;
+        return $this->dailyTimeslots;
     }
 
     /**
@@ -106,10 +106,4 @@ class Conference
     {
         $this->dailySessionList = $dailySessionList;
     }
-
-
-
-
-
-
 }

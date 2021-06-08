@@ -27,16 +27,15 @@ function buildScheduleBottom()
 /**
  * Build the bottom of the site
  */
-function buildForm($method)
+function buildLinkToEdit($date)
 {
-    echo "<form method=\"$method\" action=\"editPage.php\">
-          <input type=\"submit\" value=\"Session anlegen\bearbeiten\">
-          </form>";
+    echo "<a href=\"editPage.php\">Sessions für den $date anlegen/bearbeiten<a>";
 }
 
 function buildIndex()
 {
-    $conf = loadConference();
+    $conf = buildConference();
+    updateDailySession($conf);
     $datesCount = count($conf->getDays());
     $startDate = $conf->getDays()[0];
     $endDate = $conf->getDays()[$datesCount - 1];
@@ -61,7 +60,7 @@ function buildIndex()
         if ($themeCounter === 0) {
             buildSchedulePart("Noch kein Programm!", "", "");
         }
+        buildLinkToEdit($dayList[$i]->getDate());
         buildScheduleBottom();
     }
-    buildForm("post");
 }

@@ -13,7 +13,6 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "Co
 require_once __DIR__ . DIRECTORY_SEPARATOR . "view"  . DIRECTORY_SEPARATOR . "indexViewController.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "view"  . DIRECTORY_SEPARATOR . "Title.php";
 
-session_start();
 
 function readJSON()
 {
@@ -21,17 +20,21 @@ function readJSON()
     return json_decode($jsonFile);
 }
 
-function writeUpdateJSON(Conference $confNow)
+function updateDailySession(Conference $confNow)
 {
-    $listCounter = count($confNow->getDailySessionList());
-    $dayList = $confNow->getDailySessionList();
-    for ($i = 0; $i < $listCounter; $i++) {
-        $session = $dayList[$i]->getSessionList();
-        $scheduleCounter = count($session);
-        for ($j = 0; $j < $scheduleCounter; $j++) {
-          $session[$j]->setTheme(htmlspecialchars($_POST["theme". $i . $j]));
-          $session[$j]->setSpeaker(htmlspecialchars($_POST["speaker" . $i . $j]));
+    if(!empty($_POST["theme00"]))
+    {
+        $listCounter = count($confNow->getDailySessionList());
+        $dayList = $confNow->getDailySessionList();
+        for ($i = 0; $i < $listCounter; $i++) {
+            $dailySession = $dayList[$i]->getSessionList();
+            $scheduleCounter = count($dailySession);
+            for ($j = 0; $j < $scheduleCounter; $j++) {
+                $dailySession[$j]->setTheme(htmlspecialchars($_POST["theme". $i . $j]));
+                $dailySession[$j]->setSpeaker(htmlspecialchars($_POST["speaker" . $i . $j]));
+            }
         }
+        writeToJSON($confNow);
     }
 }
 
@@ -44,11 +47,18 @@ function buildConference(): Conference
     $confDates = $jsonArray->dates;
     $confCity = $jsonArray->city;
     $confLocation = $jsonArray->location;
-    $confDailySlots = $jsonArray->dailyTimeslots;
+    $confDailySlots = $jsonArray->timeslots;
 
-    return new Conference($confName, $confWelcomeText, $confDates, $confCity, $confLocation, $confDailySlots);
+    $conf = new Conference($confName, $confWelcomeText, $confDates, $confCity, $confLocation, $confDailySlots);
+
+    if (count($jsonArray->themes)==0)
+    {
+        $conf->createDailySessionList();
+        writeToJSON($conf);
+    }
+    return $conf;
 }
-
+/**
 function loadConference(): Conference
 {
     if (empty($_SESSION["ConfBuild"]) || $_SESSION["ConfBuild"]===false){
@@ -59,7 +69,36 @@ function loadConference(): Conference
         return $conf;
     }
 }
+*/
+
+function writeToJSON($conf)
+{
+    $listCounter = count($conf->getDailySessionList());
+    $dayList = $conf->getDailySessionList();
+    for ($i = 0; $i < $listCounter; $i++) {
+        $timeslotsArray = array();
+        $themesArray = array();
+        $speakersArray = array();
+
+        $dailySession = $dayList[$i]->getSessionList();
+        $scheduleCounter = count($dailySession);
+        for ($j = 0; $j < $scheduleCounter; $j++) {
+
+            array_push($timeslotsArray,$dailySession[$j]->getTimeslot());
+            array_push($themesArray, $dailySession[$j]->getTheme());
+            array_push($speakersArray, $dailySession[$j]->getSpeakers());
+        }
+        $session = array(
+            "timeslot"=> $timeslotsArray,
+            "themes"=> $themesArray,
+            "speaker" => $speakersArray,
+        );
+        $dailySessionsArray = array(
+            "dailySession"=> $session
+        );
+        $toJSON = json_encode($session);
+        file_put_contents("data/conference.json", $toJSON, 2);
+    }
+}
 
 
-
-//session_destroy();
