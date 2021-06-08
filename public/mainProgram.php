@@ -7,7 +7,6 @@
  * @date 18.05.2021
  * @version 1.20210518.1016
  */
-require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "Speaker.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "Session.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "DailySessions.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "Conference.php";
@@ -22,9 +21,18 @@ function readJSON()
     return json_decode($jsonFile);
 }
 
-function writeConferenceJSON()
+function writeUpdateJSON(Conference $confNow)
 {
-
+    $listCounter = count($confNow->getDailySessionList());
+    $dayList = $confNow->getDailySessionList();
+    for ($i = 0; $i < $listCounter; $i++) {
+        $session = $dayList[$i]->getSessionList();
+        $scheduleCounter = count($session);
+        for ($j = 0; $j < $scheduleCounter; $j++) {
+          $session[$j]->setTheme(htmlspecialchars($_POST["theme". $i . $j]));
+          $session[$j]->setSpeaker(htmlspecialchars($_POST["speaker" . $i . $j]));
+        }
+    }
 }
 
 function buildConference(): Conference
@@ -43,8 +51,13 @@ function buildConference(): Conference
 
 function loadConference(): Conference
 {
-    return buildConference();
-
+    if (empty($_SESSION["ConfBuild"]) || $_SESSION["ConfBuild"]===false){
+        return buildConference();
+    } else {
+        $conf = buildConference();
+        writeUpdateJSON($conf);
+        return $conf;
+    }
 }
 
 

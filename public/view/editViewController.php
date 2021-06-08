@@ -24,12 +24,14 @@ function buildScheduleEditHead($date)
     echo "<div><b>Tagungsprogramm am $date</b>";
 }
 
-function buildScheduleEdit($timeslot, $theme, $speaker)
+function buildScheduleEdit($timeslot, $theme, $speaker, $number)
 {
     echo "<p>
             <label for=\"$timeslot\">$timeslot: </label>
-            <input type=\"text\" name=\"$theme\" id=\"$theme\" placeholder='Thema eintragen'>
-            <input type=\"text\" name=\"$speaker\" id=\"$speaker\" placeholder='Vorname und Nachname eintragen'>
+            <label for=\"theme\">Thema:</label>
+            <input type=\"text\" name=\"theme$number\" id=\"theme$number\" VALUE=\"$theme\">
+            <label for=\"speaker\">Votragende:</label>
+            <input type=\"text\" name=\"speaker$number\" id=\"speaker$number\" VALUE=\"$speaker\">
           </p>";
 }
 
@@ -59,9 +61,9 @@ function buildEditPage(){
         $scheduleCounter = count($daySchedule);
         buildScheduleEditHead($dayList[$i]->getDate());
         for ($j = 0; $j < $scheduleCounter; $j++) {
-            buildScheduleEdit($daySchedule[$j]->getTimeslot(), $daySchedule[$j]->getTheme(), $daySchedule[$j]->getSpeakers());
+            buildScheduleEdit($daySchedule[$j]->getTimeslot(), $daySchedule[$j]->getTheme(), $daySchedule[$j]->getSpeakers(),$i.$j );
         }
     }
     buildFormButton();
-
+    $_SESSION["ConfBuild"]=true;
 }
