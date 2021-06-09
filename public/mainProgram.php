@@ -77,7 +77,6 @@ function writeToJSON($conf)
     $speakersArray = array();
     for ($i = 0; $i < $listCounter; $i++) {
 
-
         $dailySession = $dayList[$i]->getSessionList();
         $scheduleCounter = count($dailySession);
         for ($j = 0; $j < $scheduleCounter; $j++) {
@@ -95,9 +94,6 @@ function writeToJSON($conf)
         "dailyTimeslots" => $conf->getDailyTimeslots(),
         "themes"=> $themesArray,
         "speaker" => $speakersArray,
-    );
-    $dailySessionsArray = array(
-        "dailySession"=> $session
     );
     $toJSON = json_encode($session);
     file_put_contents("data/conference.json", $toJSON);
