@@ -1,8 +1,13 @@
 <?php
 
 
+/**
+ * Class conference to create conference objects that serve as the top model class. These objects
+ * create further objects from the DailySession class and manage them in an array
+ */
 class Conference
 {
+
     private $name;
     private $welcomeText;
     private $days;
@@ -22,6 +27,8 @@ class Conference
      * @param string $city
      * @param string $location
      * @param array $dailyTimeslots
+     * @param array $themes
+     * @param array $speakers
      */
     public function __construct(string $name,string $welcomeText,array $days,string $city,
                                 string $location, array $dailyTimeslots, array $themes, array $speakers)
@@ -39,6 +46,10 @@ class Conference
 
     }
 
+
+    /**
+     *function to create initial session lists or load data
+     */
     public function createOrLoadDailySessionList()
     {
         $dailySlotCount = count($this->dailyTimeslots);
@@ -64,7 +75,7 @@ class Conference
 
 
     /**
-     * @return string
+     * @return string name of conference
      */
     public function getName(): string
     {
@@ -72,7 +83,7 @@ class Conference
     }
 
     /**
-     * @return string
+     * @return string welcomeText of conference
      */
     public function getWelcomeText(): string
     {
@@ -80,7 +91,7 @@ class Conference
     }
 
     /**
-     * @return array
+     * @return array days of conference
      */
     public function getDays(): array
     {
@@ -88,7 +99,7 @@ class Conference
     }
 
     /**
-     * @return string
+     * @return string city where the conference takes place
      */
     public function getCity(): string
     {
@@ -96,7 +107,7 @@ class Conference
     }
 
     /**
-     * @return string
+     * @return string location where the conference takes place
      */
     public function getLocation(): string
     {
@@ -104,7 +115,7 @@ class Conference
     }
 
     /**
-     * @return array
+     * @return array with daily available timeslots
      */
     public function getDailyTimeslots(): array
     {
@@ -112,7 +123,7 @@ class Conference
     }
 
     /**
-     * @return array
+     * @return array with daily available session list
      */
     public function getDailySessionList(): array
     {
@@ -120,7 +131,7 @@ class Conference
     }
 
     /**
-     * @param array $dailySessionList
+     * @param array $dailySessionList daily available session list
      */
     public function setDailySessionList(array $dailySessionList)
     {

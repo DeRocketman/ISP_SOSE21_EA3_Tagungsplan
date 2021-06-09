@@ -1,10 +1,15 @@
 <?php
 /**
- *
+ * this file ist the controller for editView.php
  */
 
 include __DIR__ . "/../mainProgram.php";
 
+/**
+ * for the header
+ * @param $firstDate
+ * @param $lastDate
+ */
 function buildEditHeadline($firstDate, $lastDate)
 {
     echo "<h1>Hier kann das Tagungsprogramm angelegt und editiert werden</h1>
@@ -12,18 +17,29 @@ function buildEditHeadline($firstDate, $lastDate)
 }
 
 /**
- * Build the headerpart of the form
+ * Build the header part of the form
  */
 function buildFormHead()
 {
     echo "<form method=\"post\" action=\"index.php\">";
 }
 
+/**
+ * build head of the schedule
+ * @param $date
+ */
 function buildScheduleEditHead($date)
 {
     echo "<div><b>Tagungsprogramm am $date</b>";
 }
 
+/**
+ * build schedule parts
+ * @param $timeslot
+ * @param $theme
+ * @param $speaker
+ * @param $number
+ */
 function buildScheduleEdit($timeslot, $theme, $speaker, $number)
 {
     echo "<p>
@@ -44,6 +60,9 @@ function buildFormButton()
           </form></div>";
 }
 
+/**
+ * function the build the edit site
+ */
 function buildEditPage(){
     $conf = buildConference();
     $datesCount = count($conf->getDays());

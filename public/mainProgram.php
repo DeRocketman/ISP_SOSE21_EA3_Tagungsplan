@@ -1,11 +1,10 @@
 <?php
-
 /**
  * ISP SoSe21 EA3 - OOP
- * Filename: mainProgram.php
+ * Filename: mainProgram.php connect the model classes with both view-controller
  * @author Dirk Stricker dirk.stricker@stud.th-lubeck.de
  * @date 18.05.2021
- * @version 1.20210518.1016
+ * @version 1.20210609
  */
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "Session.php";
 require_once __DIR__ . DIRECTORY_SEPARATOR . "model" . DIRECTORY_SEPARATOR . "DailySessions.php";
@@ -14,12 +13,20 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "view"  . DIRECTORY_SEPARATOR . "in
 require_once __DIR__ . DIRECTORY_SEPARATOR . "view"  . DIRECTORY_SEPARATOR . "Title.php";
 
 
+/**
+ * function reads a json-file and
+ * @return return it as json-arrays
+ */
 function readJSON()
 {
     $jsonFile = file_get_contents('data/conference.json', true);
     return json_decode($jsonFile);
 }
 
+/**
+ * updates session values
+ * @param Conference $confNow
+ */
 function updateDailySession(Conference $confNow)
 {
     if(!empty($_POST["theme00"]))
@@ -38,6 +45,10 @@ function updateDailySession(Conference $confNow)
     }
 }
 
+/**
+ * this function get data from json-file and build a Conference object
+ * @return Conference object
+ */
 function buildConference(): Conference
 {
     $jsonArray = readJSON();
@@ -56,19 +67,12 @@ function buildConference(): Conference
     writeToJSON($conf);
     return $conf;
 }
-/**
-function loadConference(): Conference
-{
-    if (empty($_SESSION["ConfBuild"]) || $_SESSION["ConfBuild"]===false){
-        return buildConference();
-    } else {
-        $conf = buildConference();
-        writeUpdateJSON($conf);
-        return $conf;
-    }
-}
-*/
 
+/**
+ * this function writes the updated Conference data, DailySessions data and Sessions data to
+ * back to the json as complete overwrite.
+ * @param Conference object as $conf
+ */
 function writeToJSON($conf)
 {
     $listCounter = count($conf->getDailySessionList());

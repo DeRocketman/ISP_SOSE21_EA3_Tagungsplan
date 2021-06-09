@@ -1,8 +1,7 @@
 <?php
 
-
 /**
- * Class Title
+ * Class Title for all possible titles there a speaker could have
  */
 class Title
 {

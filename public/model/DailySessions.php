@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Class DailySessions generate the session objects and manage they into
+ * arrays
+ */
 
 class DailySessions
 {
@@ -8,14 +11,19 @@ class DailySessions
 
     /**
      * DailySessions constructor.
-     * @param $date
+     * @param string $date
      */
-    public function __construct($date)
+    public function __construct(string $date)
     {
         $this->date = $date;
         $this->sessionList = array();
     }
 
+
+    /**
+     * create initial session objects and add they to an array
+     * @param array $dailyTimeslots
+     */
     public function createSessionList(array $dailyTimeslots)
     {
         foreach ($dailyTimeslots as $timeslot)
@@ -25,6 +33,14 @@ class DailySessions
         }
     }
 
+    /**
+     * create session object with values from json file and add they to
+     * an array
+     * @param array $dailyTimeslots
+     * @param array $themes
+     * @param array $speakers
+     * @param int $startIndex
+     */
     public function loadSessionList(array $dailyTimeslots, array $themes, array $speakers, int $startIndex)
     {
         $j = $startIndex;
@@ -37,15 +53,15 @@ class DailySessions
     }
 
     /**
-     * @return mixed
+     * @return string date for the DailySession
      */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->date;
     }
 
     /**
-     * @return array
+     * @return array for the DailySession
      */
     public function getSessionList(): array
     {
@@ -53,7 +69,7 @@ class DailySessions
     }
 
     /**
-     * @param array $sessionList
+     * @param array $sessionList for the DailySession
      */
     public function setSessionList(array $sessionList)
     {

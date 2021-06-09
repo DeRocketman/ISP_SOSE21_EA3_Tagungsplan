@@ -1,6 +1,8 @@
 <?php
-
-
+/**
+ * Class Session to generate session objects as smallest unit in
+ * the project.
+ */
 class Session
 {
     private $timeslot;
@@ -21,7 +23,7 @@ class Session
     }
 
     /**
-     * @return string
+     * @return string timeslot for the session
      */
     public function getTimeslot(): string
     {
@@ -29,7 +31,7 @@ class Session
     }
 
     /**
-     * @return string
+     * @return string theme for the session
      */
     public function getTheme(): string
     {
@@ -37,7 +39,7 @@ class Session
     }
 
     /**
-     * @return string
+     * @return string speaker for the session
      */
     public function getSpeakers(): string
     {
@@ -45,7 +47,7 @@ class Session
     }
 
     /**
-     * @param string $theme
+     * @param string $theme for the session
      */
     public function setTheme(string $theme)
     {
@@ -53,7 +55,7 @@ class Session
     }
 
     /**
-     * @param string $speakers
+     * @param string $speakers for the session
      */
     public function setSpeakers(string $speakers)
     {
