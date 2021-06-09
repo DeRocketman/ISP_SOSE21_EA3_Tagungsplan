@@ -25,6 +25,17 @@ class DailySessions
         }
     }
 
+    public function loadSessionList(array $dailyTimeslots, array $themes, array $speakers, int $startIndex)
+    {
+        $j = $startIndex;
+        $slotCount= count($dailyTimeslots);
+        for ($i = 0; $i < $slotCount; $i++, $j++)
+        {
+            $session = new Session($dailyTimeslots[$i], $themes[$j], $speakers[$j]);
+            array_push($this->sessionList, $session);
+        }
+    }
+
     /**
      * @return mixed
      */

@@ -53,9 +53,9 @@ class Session
     }
 
     /**
-     * @param array $speakers
+     * @param string $speakers
      */
-    public function setSpeakers(array $speakers)
+    public function setSpeakers(string $speakers)
     {
         $this->speakers = $speakers;
     }

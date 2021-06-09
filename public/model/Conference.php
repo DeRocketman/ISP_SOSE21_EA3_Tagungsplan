@@ -10,6 +10,8 @@ class Conference
     private $location;
     private $dailyTimeslots;
     private $dailySessionList;
+    private $themesArray;
+    private $speakerArray;
 
 
     /**
@@ -22,7 +24,7 @@ class Conference
      * @param array $dailyTimeslots
      */
     public function __construct(string $name,string $welcomeText,array $days,string $city,
-                                string $location, array $dailyTimeslots)
+                                string $location, array $dailyTimeslots, array $themes, array $speakers)
     {
         $this->name = $name;
         $this->welcomeText = $welcomeText;
@@ -31,17 +33,35 @@ class Conference
         $this->location = $location;
         $this->dailyTimeslots = $dailyTimeslots;
         $this->dailySessionList = array();
+        $this->themesArray = $themes;
+        $this->speakerArray = $speakers;
+        $this->createOrLoadDailySessionList();
+
     }
 
-    public function createDailySessionList()
+    public function createOrLoadDailySessionList()
     {
-        foreach ($this->days as $day)
+        $dailySlotCount = count($this->dailyTimeslots);
+
+        if(count($this->themesArray)==0 && count($this->speakerArray)==0)
         {
-            $dailySessions = new DailySessions($day);
-            $dailySessions->createSessionList($this->dailyTimeslots);
-            array_push($this->dailySessionList, $dailySessions);
+            foreach ($this->days as $day)
+            {
+                $dailySessions = new DailySessions($day);
+                $dailySessions->createSessionList($this->dailyTimeslots);
+                array_push($this->dailySessionList, $dailySessions);
+            }
+        }else{
+            for ($i=0; $i< count($this->days); $i++)
+            {
+                $dailySessions = new DailySessions($this->days[$i]);
+                $dailySessions->loadSessionList($this->dailyTimeslots, $this->themesArray,
+                    $this->speakerArray, $i*$dailySlotCount);
+                array_push($this->dailySessionList, $dailySessions);
+            }
         }
     }
+
 
     /**
      * @return string
@@ -86,7 +106,7 @@ class Conference
     /**
      * @return array
      */
-    public function getDailyTimeslot(): array
+    public function getDailyTimeslots(): array
     {
         return $this->dailyTimeslots;
     }
